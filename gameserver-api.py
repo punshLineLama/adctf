@@ -73,9 +73,13 @@ def main():
             client_socket.send(b"Against which service should the gameserver launch an attack?\n1. SaarXiv\n2. Saarlendar\n")
             service = client_socket.recv(1024).decode('utf-8')
             if "1" in service:
-                saarxiv_exploit.exploit("192.168.42.31")
+                flags = saarxiv_exploit.exploit("192.168.42.31")
+                client_socket.send(b"Got flags: %s"+flags.encode('utf-8'))
+
             elif "2" in data:
-                saarlendar_exploit.exploit("192.168.42.31")
+                flags = saarlendar_exploit.exploit("192.168.42.31")
+                client_socket.send(b"Got flags: %s"+''.join(flags).encode('utf-8'))
+
             
 
 
