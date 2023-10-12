@@ -1,13 +1,13 @@
 import socket
 import sys 
 
-sys.path.append("checker/saarxiv")
+sys.path.append("checkers/saarxiv")
 sys.path.append("exploits/saarxiv")
 
 import saarxiv_exploit
 import saarxiv
 
-sys.path.append("checker/saarlendar")
+sys.path.append("checkers/saarlendar")
 sys.path.append("exploits/saarlendar")
 
 import saarlendar_exploit
