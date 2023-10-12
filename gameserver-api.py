@@ -12,6 +12,7 @@ server_socket.bind((host, port))
 
 # Listen for incoming connections (max 5)
 server_socket.listen(10)
+teams = [31,32,33]
 
 print(f"Server is listening on {host}:{port}")
 
@@ -24,10 +25,40 @@ while True:
     data = client_socket.recv(1024).decode('utf-8')
 
     if "1" in data:
-        client_socket.send(b"What is the vulnbox-id (digits of the IP) you want to check?\n")
-        target = "192.168.42."+client_socket.recv(1024).decode("utf-8").strip()
-
+        client_socket.send(b"What is the team-id (digits of the IP) you want to check?\n")
         client_socket.send(b"Checking your services of %s...."%target.encode("utf-8"))
+        try:
+            teamid = int(client_socket.recv(1024).decode("utf-8").strip())
+            if teamid not in teams:
+                client_socket.send(b"Teamid not valid")
+            else:
+                target = "192.168.42."+str(teamid)
+        except:
+            client_socket.send(b"Teamid not valid")
+
+        try:
+            run_saarxiv_check(teamid,1)
+            client_socket.send(b"SaarXiv: UP")
+        except:
+            client_socket.send(b"SaarXiv: DOWN")
+        
+        try:
+            run_saarlender_check(teamid,1)
+            client_socket.send(b"Saarlenar: UP")
+        except: 
+            client_socket.send(b"Saarlenar: DOWN")
+
+    if "2" in data:
+        client_socket.send(b"Against which service should the gameserver launch an attack?\n1. SaarXiv\n2. Saarlendar\n")
+        service = client_socket.recv(1024).decode('utf-8')
+        if "1" in service:
+            exploit_saarxiv(teamid)
+        elif "2" in data:
+            exploit_saarlendar(teamid)
+        
+        
+
+
         #check_services()
     # Add your code to process the command here
     # For security, make sure to validate and sanitize the received command.
