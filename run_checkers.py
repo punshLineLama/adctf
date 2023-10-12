@@ -67,7 +67,6 @@ def main():
     scheduler.enter(interval, 1, run_checks, ([[1,]]))
     scheduler.run()
     while True:
-        run_checks()
         time.sleep(1000)
 
 # If run_checkers is called as main program, just run the checkers every 5 minutes.
