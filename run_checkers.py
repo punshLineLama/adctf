@@ -2,9 +2,9 @@ import sched
 import time
 import sys
 from gamelib import *
-sys.path.append("saarXiv/checkers/")
+sys.path.append("checkers/saarXiv/")
 import saarxiv
-sys.path.append("saarlendar/checkers/")
+sys.path.append("checkers/saarlender/")
 import gameserver
 
 
