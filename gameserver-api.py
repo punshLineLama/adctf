@@ -1,17 +1,16 @@
 import socket
 import sys 
 
-sys.path.append("checkers/saarxiv")
 sys.path.append("exploits/saarxiv")
 
 import saarxiv_exploit
 import saarxiv
 
-sys.path.append("checkers/saarlendar")
 sys.path.append("exploits/saarlendar")
 
 import saarlendar_exploit
 import saarlendar
+import run_checkers
 
 def id_to_ip(id):
     if id in [1,2,3,4]:
@@ -65,7 +64,7 @@ def main():
 
             client_socket.send(b"Checking your services of %s....\n"%target.encode("utf-8"))
             try:
-                saarxiv.run_saarxiv_check(teamid,1)
+                run_checkers.run_saarxiv_check(teamid,1)
                 client_socket.send(b"SaarXiv: UP\n")
             except Exception as e:
                 # Catch the exception and print it
@@ -73,7 +72,7 @@ def main():
                 client_socket.send(b"SaarXiv: DOWN%s\n"%e.encode())
             
             try:
-                saarlendar.run_saarlender_check(teamid,1)
+                run_checkers.run_saarlender_check(teamid,1)
                 client_socket.send(b"Saarlenar: UP\n")
             except Exception as e: 
                 client_socket.send(b"Saarlenar: DOWN\n")
