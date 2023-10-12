@@ -12,8 +12,9 @@ import gameserver
 # Initialize the scheduler
 scheduler = sched.scheduler(time.time, time.sleep)
 # Define the interval in seconds (5 minutes = 300 seconds)
-interval = 300 
-round = 0
+interval = 5
+global round_g
+round_g = 0
 
 def saarxiv_check(team_nb, round):
     team = saarxiv.Team(2, '', '192.168.42.3'+str(team_nb))    
@@ -53,20 +54,17 @@ def saarlendar_check(team_nb, round):
 
 # Define a function to execute the task
 def run_checks(teams):
-    round +=1
+    global round_g
+    round_g +=1
     print("Running service checks started at:", time.ctime())
     for team in teams:
-        saarxiv_check(team, round)
-        saarlendar_check(team, round)
+        saarxiv_check(team, round_g)
+        saarlendar_check(team, round_g)
 
-
-# Start the scheduler
-print("Task scheduler started. Press Ctrl+C to exit.")
-schedule_next_task(interval)
 
 def main():
     # Schedule the initial task
-    scheduler.enter(interval, 1, run_checks, ())
+    scheduler.enter(interval, 1, run_checks, ([[1,]]))
     scheduler.run()
     while True:
         run_checks()
