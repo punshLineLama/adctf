@@ -1,12 +1,17 @@
 import socket
 import sys 
 
+sys.path.append("checker/saarxiv")
 sys.path.append("exploits/saarxiv")
+
 import saarxiv_exploit
+import saarxiv
 
+sys.path.append("checker/saarlendar")
 sys.path.append("exploits/saarlendar")
-import saarlendar_exploit
 
+import saarlendar_exploit
+import saarlendar
 
 def id_to_ip(id):
     if id in [1,2,3,4]:
@@ -53,21 +58,27 @@ def main():
                     client_socket.send(b"Teamid not valid")
                 else:
                     target = id_to_ip(teamid)
-            except:
+            except Exception as e:
+                # Catch the exception and print it
+                print(f"An exception occurred: {e}")
                 client_socket.send(b"Teamid not valid")
 
-            client_socket.send(b"Checking your services of %s...."%target.encode("utf-8"))
+            client_socket.send(b"Checking your services of %s....\n"%target.encode("utf-8"))
             try:
-                run_saarxiv_check(teamid,1)
-                client_socket.send(b"SaarXiv: UP")
-            except:
-                client_socket.send(b"SaarXiv: DOWN")
+                saarxiv.run_saarxiv_check(teamid,1)
+                client_socket.send(b"SaarXiv: UP\n")
+            except Exception as e:
+                # Catch the exception and print it
+                print(f"An exception occurred: {e}")
+                client_socket.send(b"SaarXiv: DOWN%s\n"%e.encode())
             
             try:
-                run_saarlender_check(teamid,1)
-                client_socket.send(b"Saarlenar: UP")
-            except: 
-                client_socket.send(b"Saarlenar: DOWN")
+                saarlendar.run_saarlender_check(teamid,1)
+                client_socket.send(b"Saarlenar: UP\n")
+            except Exception as e: 
+                client_socket.send(b"Saarlenar: DOWN\n")
+                client_socket.send(b"Saarlendar: DOWN%s\n"%e.encode())
+
 
         if "2" in data:
             client_socket.send(b"Against which service should the gameserver launch an attack?\n1. SaarXiv\n2. Saarlendar\n")
