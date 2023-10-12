@@ -4,12 +4,10 @@ import sys
 sys.path.append("exploits/saarxiv")
 
 import saarxiv_exploit
-import saarxiv
 
 sys.path.append("exploits/saarlendar")
 
 import saarlendar_exploit
-import saarlendar
 import run_checkers
 
 def id_to_ip(id):
