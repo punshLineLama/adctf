@@ -15,7 +15,7 @@ scheduler = sched.scheduler(time.time, time.sleep)
 interval = 300 
 round = 0
 
-def saarxiv_check(team_nb):
+def saarxiv_check(team_nb, round):
     team = saarxiv.Team(2, '', '192.168.42.3'+str(team_nb))    
     service = saarxiv.SaarXivInterface(1)
 
@@ -32,7 +32,7 @@ def saarxiv_check(team_nb):
     print('Done ({} flags).'.format(flags))
 
 
-def saarlendar_check(team_nb):
+def saarlendar_check(team_nb, round):
     # TEST CODE
     team = Team(2, 'n00bs', '192.168.42.3'+str(team_nb))
     print("Round:", round)
@@ -52,9 +52,12 @@ def saarlendar_check(team_nb):
     
 
 # Define a function to execute the task
-def run_checks():
+def run_checks(teams):
     round +=1
     print("Running service checks started at:", time.ctime())
+    for team in teams:
+        saarxiv_check(team, round)
+        saarlendar_check(team, round)
 
 
 # Start the scheduler
