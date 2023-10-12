@@ -16,7 +16,7 @@ import redis
 
 from . import flag_ids
 
-SECRET_FLAG_KEY: bytes = b'\x00' * 32  # type: ignore
+SECRET_FLAG_KEY: bytes = b'\x00' * 16 + b'\x13' * 16  # type: ignore
 
 
 def get_redis_connection() -> redis.StrictRedis:
@@ -194,14 +194,18 @@ class ServiceInterface:
         if flag[:5] != 'SAAR{' or flag[-1] != '}':
             print('Flag "{}": invalid format'.format(flag))
             return (None, None, None, None)
-        data = base64.b64decode(flag[5:-1], altchars=b'-_')
+        try:
+            data = base64.b64decode(flag[5:-1], altchars=b'-_')
+        except:
+            print("Could not decode flag!")
+            return (None, None, None, None)
         if len(data) != FLAG_LENGTH:
             print('Flag "{}": invalid length'.format(flag))
             return (None, None, None, None)
         stored_tick, teamid, serviceid, payload = struct.unpack('<HHHH', data[:-MAC_LENGTH])
-        if serviceid != self.id:
-            print('Flag "{}": invalid service'.format(flag))
-            return (None, None, None, None)
+        #if serviceid != self.id:
+        #    print('Flag "{}": invalid service'.format(flag))
+        #    return (None, None, None, None)
         mac = hmac.new(SECRET_FLAG_KEY, data[:-MAC_LENGTH], hashlib.sha256).digest()[:MAC_LENGTH]
         if data[-MAC_LENGTH:] != mac:
             print('Flag "{}": invalid mac'.format(flag))
