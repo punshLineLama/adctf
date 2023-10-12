@@ -5,7 +5,7 @@ from gamelib import *
 sys.path.append("checkers/saarxiv/")
 import saarxiv
 sys.path.append("checkers/saarlender/")
-import gameserver
+import saarchecker
 
 
 
@@ -37,7 +37,7 @@ def saarlendar_check(team_nb, round):
     # TEST CODE
     team = Team(2, 'n00bs', '192.168.42.3'+str(team_nb))
     print("Round:", round)
-    service = SaarlendarChecker(2)
+    service = saarchecker.SaarlendarChecker(2)
 
     print('[1] Integrity check...')
     service.check_integrity(team, round)
