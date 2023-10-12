@@ -18,6 +18,17 @@ interval = 3
 global round_g
 round_g = 0
 
+def id_to_ip(id):
+    if id in [1,2,3,4]:
+        return "192.168.42.3"+str(id)
+    elif id in [31,32,33,34]:
+        return "192.168.42."+str(id)
+    else:
+        print("[-] Error converting id to ip, returning 192.168.42.31!!")
+        return "192.168.42.31"
+
+
+
 # Define a function to run saarxiv_check in a thread with a timeout
 def run_saarxiv_check(team_nb, round):
     thread = threading.Thread(target=saarxiv_check, args=(team_nb, round))
@@ -33,7 +44,7 @@ def run_saarlender_check(team_nb, round):
     thread.join(timeout=15)  # Wait for at most 15 seconds
 
 def saarxiv_check(team_nb, round):
-    team = saarxiv.Team(2, '', '192.168.42.3' + str(team_nb))
+    team = saarxiv.Team(2, '', id_to_ip(team_nb))
     service = saarxiv.SaarXivInterface(1)
 
     print('[1] Integrity check...')
@@ -49,7 +60,7 @@ def saarxiv_check(team_nb, round):
     print('Done ({} flags).'.format(flags))
 
 def saarlender_check(team_nb, round):
-    team = Team(2, 'n00bs', '192.168.42.3' + str(team_nb))
+    team = Team(2, 'n00bs', id_to_ip(team_nb))
     print("Round:", round)
     service = saarchecker.SaarlendarChecker(2)
 
