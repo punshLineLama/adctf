@@ -131,6 +131,7 @@ class SaarXivInterface(ServiceInterface):
         try:
             assert_requests_response(requests.get('http://{}:5000/'.format(team.ip), timeout=gamelib.TIMEOUT),
                                      'text/html; charset=utf-8')
+            return True
         except (IOError, ConnectionRefusedError):
             raise OfflineException('Could not load home page')
 
@@ -163,6 +164,7 @@ class SaarXivInterface(ServiceInterface):
             return 1
         except IOError:
             raise OfflineException('Could not create paper')
+            return 0
 
     def retrieve_flags(self, team, round):
         api = SaarXivAPI('http://{}:5000'.format(team.ip), timeout=gamelib.TIMEOUT)

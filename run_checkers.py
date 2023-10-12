@@ -35,6 +35,8 @@ def run_saarxiv_check(team_nb, round):
     thread.daemon = True
     thread.start()
     thread.join(timeout=15)  # Wait for at most 15 seconds
+    return thread.result
+
 
 # Define a function to run saarlender_check in a thread with a timeout
 def run_saarlender_check(team_nb, round):
@@ -42,22 +44,26 @@ def run_saarlender_check(team_nb, round):
     thread.daemon = True
     thread.start()
     thread.join(timeout=15)  # Wait for at most 15 seconds
+    return thread.result
 
 def saarxiv_check(team_nb, round):
     team = saarxiv.Team(2, '', id_to_ip(team_nb))
     service = saarxiv.SaarXivInterface(1)
 
     print('[1] Integrity check...')
-    service.check_integrity(team, round)
+    integrity = service.check_integrity(team, round)
     print('Passed.')
 
     print('[2] Store flags...')
-    flags = service.store_flags(team, round)
+    flags_store = service.store_flags(team, round)
     print('Done ({} flags).'.format(flags))
 
     print('[3] Retrieve the flags in the next round')
     flags = service.retrieve_flags(team, round)
     print('Done ({} flags).'.format(flags))
+
+    if integrity and flags_store:
+        return True
 
 def saarlender_check(team_nb, round):
     team = Team(2, 'n00bs', id_to_ip(team_nb))
@@ -65,16 +71,21 @@ def saarlender_check(team_nb, round):
     service = saarchecker.SaarlendarChecker(2)
 
     print('[1] Integrity check...')
-    service.check_integrity(team, round)
+    integrity = service.check_integrity(team, round)
     print('Passed.')
 
     print('[2] Store flags...')
-    flags = service.store_flags(team, round)
+    flags_store = service.store_flags(team, round)
     print('Done ({} flags).'.format(flags))
 
     print('[3] Retrieve the flags in the next round')
     flags = service.retrieve_flags(team, round)
     print('Done ({} flags).'.format(flags))
+
+    if flags_store and integrity:
+        return True
+    else:
+        return False
 
 # Define a function to execute the task
 def run_checks(teams):

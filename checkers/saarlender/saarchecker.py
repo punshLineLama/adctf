@@ -57,38 +57,52 @@ class SaarlendarChecker(ServiceInterface):
             r2 = self.login(team, round, True)
         except OSError:
             raise OfflineException('Could not login')
+            return False
+
         try:
             r.addevent(title=randomstring(10), content=randomstring(40), public=True)
             r2.addevent(title=randomstring(10), content=randomstring(40), public=False)
         except OSError:
             raise OfflineException('Could not add event')
+            return False
+
         try:
             r.getevents(public=True)
             r2.getevents(public=False)
         except OSError:
             raise OfflineException('Could not get events')
+            return False
+
         try:
             r.sendmessage(to=r2.username, message=randomstring(10))
             r2.sendmessage(to=r.username, message=randomstring(13))
         except OSError:
             raise OfflineException('Could not send message')
+            return False
+
         try:
             nonce = randomstring(10)
             assert nonce in r.shell_plain(("print('%s')" % nonce.decode()).encode())
         except OSError:
             raise OfflineException('Could not use saarjs shell')
+            return False
+
         try:
             r2.audit()
         except OSError:
             raise OfflineException('Could not audit nginx.conf')
+            return False
         if random.randint(0, 10) == 0:
             try:
                 # We don't want to run that too often. It takes a few requests to iterate over all config files
                 r2.audit_recursively()
+                return True
             except:
                 raise OfflineException('Could not do a full audit')
+                return False
         else:
             print("skipping full audit...")
+            return True
 
     def store_flags(self, team, round):
         try:
@@ -111,6 +125,7 @@ class SaarlendarChecker(ServiceInterface):
             return 3
         except OSError:
             raise OfflineException('Could not register')
+            return False
 
     def retrieve_flags(self, team, round):
         r = self.login(team, round, False, 1)
