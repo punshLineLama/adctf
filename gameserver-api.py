@@ -47,7 +47,6 @@ def main():
 
         if "1" in data:
             client_socket.send(b"What is the team-id (digits of the IP) you want to check?\n")
-            client_socket.send(b"Checking your services of %s...."%target.encode("utf-8"))
             try:
                 teamid = int(client_socket.recv(1024).decode("utf-8").strip())
                 if teamid not in teams:
@@ -57,6 +56,7 @@ def main():
             except:
                 client_socket.send(b"Teamid not valid")
 
+            client_socket.send(b"Checking your services of %s...."%target.encode("utf-8"))
             try:
                 run_saarxiv_check(teamid,1)
                 client_socket.send(b"SaarXiv: UP")
@@ -73,9 +73,9 @@ def main():
             client_socket.send(b"Against which service should the gameserver launch an attack?\n1. SaarXiv\n2. Saarlendar\n")
             service = client_socket.recv(1024).decode('utf-8')
             if "1" in service:
-                saarxiv_exploit.exploit(target)
+                saarxiv_exploit.exploit("192.168.42.31")
             elif "2" in data:
-                saarlendar_exploit.exploit(target)
+                saarlendar_exploit.exploit("192.168.42.31")
             
 
 
