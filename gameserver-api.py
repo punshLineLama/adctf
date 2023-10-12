@@ -73,9 +73,9 @@ def main():
             client_socket.send(b"Against which service should the gameserver launch an attack?\n1. SaarXiv\n2. Saarlendar\n")
             service = client_socket.recv(1024).decode('utf-8')
             if "1" in service:
-                saarxiv_exploit.exploit(teamid)
+                saarxiv_exploit.exploit(target)
             elif "2" in data:
-                exploit_saarlendar(teamid)
+                saarlendar_exploit.exploit(target)
             
 
 
