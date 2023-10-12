@@ -58,16 +58,25 @@ def run_checks(teams):
     round_g +=1
     print("Running service checks started at:", time.ctime())
     for team in teams:
-        saarxiv_check(team, round_g)
-        saarlendar_check(team, round_g)
+        try:
+            res.append(saarxiv_check(team, round_g))
+            res.append(saarlendar_check(team, round_g))
+        except:
+            return False
+        
+        if False in res:
+            return False
+        else:
+            return True
+
 
 
 def main():
     # Schedule the initial task
     scheduler.enter(interval, 1, run_checks, ([[1,]]))
-    scheduler.run()
     while True:
-        time.sleep(1000)
+        scheduler.run()
+        #time.sleep(1)
 
 # If run_checkers is called as main program, just run the checkers every 5 minutes.
 #  This automatically places new flags every 5 minutes and checks the services.
