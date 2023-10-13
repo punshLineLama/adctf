@@ -67,14 +67,13 @@ def main():
             except Exception as e:
                 # Catch the exception and print it
                 print(f"An exception occurred: {e}")
-                client_socket.send(b"SaarXiv: DOWN%s\n"%e.encode())
+                client_socket.send(b"SaarXiv: DOWN\n"+str(e))
             
             try:
                 run_checkers.run_saarlender_check(teamid,1)
                 client_socket.send(b"Saarlenar: UP\n")
             except Exception as e: 
-                client_socket.send(b"Saarlenar: DOWN\n")
-                client_socket.send(b"Saarlendar: DOWN%s\n"%e.encode())
+                client_socket.send(b"Saarlendar: DOWN%s\n"+str(e))
 
 
         if "2" in data:

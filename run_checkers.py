@@ -14,6 +14,7 @@ scheduler = sched.scheduler(time.time, time.sleep)
 
 # Define the interval in seconds (10 seconds)
 interval = 3
+results = [None] * 10
 
 global round_g
 round_g = 0
@@ -31,22 +32,22 @@ def id_to_ip(id):
 
 # Define a function to run saarxiv_check in a thread with a timeout
 def run_saarxiv_check(team_nb, round):
-    thread = threading.Thread(target=saarxiv_check, args=(team_nb, round))
+    thread = threading.Thread(target=saarxiv_check, args=(team_nb, round, results))
     thread.daemon = True
     thread.start()
     thread.join(timeout=15)  # Wait for at most 15 seconds
-    return thread.result
+    return results[0]
 
 
 # Define a function to run saarlender_check in a thread with a timeout
 def run_saarlender_check(team_nb, round):
-    thread = threading.Thread(target=saarlender_check, args=(team_nb, round))
+    thread = threading.Thread(target=saarlender_check, args=(team_nb, round, results))
     thread.daemon = True
     thread.start()
     thread.join(timeout=15)  # Wait for at most 15 seconds
-    return thread.result
+    return results[1]
 
-def saarxiv_check(team_nb, round):
+def saarxiv_check(team_nb, round, results):
     team = saarxiv.Team(2, '', id_to_ip(team_nb))
     service = saarxiv.SaarXivInterface(1)
 
@@ -63,9 +64,12 @@ def saarxiv_check(team_nb, round):
     print('Done ({} flags).'.format(flags))
 
     if integrity and flags_store:
-        return True
+        results[0] = True
+    else:
+        results[0] = False
+        
 
-def saarlender_check(team_nb, round):
+def saarlender_check(team_nb, round, results):
     team = Team(2, 'n00bs', id_to_ip(team_nb))
     print("Round:", round)
     service = saarchecker.SaarlendarChecker(2)
@@ -83,9 +87,10 @@ def saarlender_check(team_nb, round):
     print('Done ({} flags).'.format(flags))
 
     if flags_store and integrity:
-        return True
+        results[1] = True
     else:
-        return False
+        results[1] = False
+
 
 # Define a function to execute the task
 def run_checks(teams):
