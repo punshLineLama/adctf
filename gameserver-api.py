@@ -105,9 +105,9 @@ def main():
                 client_socket.send("Exploits run successfully! ;)")
             
             elif "3 in service":
-                exploit-leak-key.attack_leak_key("192.168.42.31:8000")
-                exploit-rc-points.attack_rc_points("192.168.42.31:8000")
-                exploit-rc-share.attack_rc_share("192.168.42.31:8000")
+                exploitleakkey.attack_leak_key("192.168.42.31:8000")
+                exploitrcpoints.attack_rc_points("192.168.42.31:8000")
+                exploitrcshare.attack_rc_share("192.168.42.31:8000")
 
 
 
