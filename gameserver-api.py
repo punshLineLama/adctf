@@ -75,9 +75,9 @@ def main():
             try:
                 res = run_checkers.run_saarlender_check(teamid,1)
                 if res:
-                    client_socket.send(b"SaarXiv: UP\n")
+                    client_socket.send(b"Saarlendar: UP\n")
                 else:
-                    client_socket.send(b"SaarXiv: DOWN\n")  
+                    client_socket.send(b"Saarlendar: DOWN\n")  
             except Exception as e: 
                 client_socket.send(b"Saarlendar: DOWN%s\n"+str(e))
 
