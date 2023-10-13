@@ -8,6 +8,15 @@ import saarxiv_exploit
 sys.path.append("exploits/saarlendar")
 
 import saarlendar_exploit
+import exploitdirectfileaccess
+
+sys.path.append("exploits/saarschleife_net")
+
+import exploitleakkey
+import exploitrcpoints
+import exploitrcshare
+
+import saarlendar_exploit
 import run_checkers
 
 def id_to_ip(id):
@@ -83,15 +92,24 @@ def main():
 
 
         if "2" in data:
-            client_socket.send(b"Against which service should the gameserver launch an attack?\n1. SaarXiv\n2. Saarlendar\n")
+            client_socket.send(b"Against which service should the gameserver launch an attack?\n1. SaarXiv\n2. Saarlendar\n3. saarschleife_net (3 different attacks in parallel)\n")
             service = client_socket.recv(1024).decode('utf-8')
             if "1" in service:
                 flags = saarxiv_exploit.exploit("192.168.42.31")
                 client_socket.send(b"Got flags: %s"+flags.encode('utf-8'))
 
-            elif "2" in data:
+            elif "2" in service:
                 flags = saarlendar_exploit.exploit("192.168.42.31")
                 client_socket.send(b"Got flags: %s"+''.join(flags).encode('utf-8'))
+                exploitdirectfileaccess.exploit("192.168.42.31")
+                client_socket.send("Exploits run successfully! ;)")
+            
+            elif "3 in service":
+                exploit-leak-key.attack_leak_key("192.168.42.31:8000")
+                exploit-rc-points.attack_rc_points("192.168.42.31:8000")
+                exploit-rc-share.attack_rc_share("192.168.42.31:8000")
+
+
 
             
 
