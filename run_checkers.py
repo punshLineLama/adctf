@@ -13,7 +13,7 @@ import threading
 scheduler = sched.scheduler(time.time, time.sleep)
 
 # Define the interval in seconds (10 seconds)
-interval = 3
+interval = 180
 results = [False] * 10
 
 global round_g
