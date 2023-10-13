@@ -4,7 +4,7 @@ from gamelib import *
 
 # Define host and port for your server
 host = '0.0.0.0'  # Listen on all available network interfaces
-port = 6665      # Choose an available port
+port = 6666      # Choose an available port
 
 # Initialize a Redis client
 redis_client = redis.StrictRedis(host='localhost', port=6379, db=0)

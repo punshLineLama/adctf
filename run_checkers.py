@@ -36,6 +36,8 @@ def run_saarxiv_check(team_nb, round):
     thread.daemon = True
     thread.start()
     thread.join(timeout=15)  # Wait for at most 15 seconds
+    print("returning results 0: "+str(results[0]))
+
     return results[0]
 
 
@@ -45,6 +47,7 @@ def run_saarlender_check(team_nb, round):
     thread.daemon = True
     thread.start()
     thread.join(timeout=15)  # Wait for at most 15 seconds
+    print("returning results 1: "+str(results[1]))
     return results[1]
 
 def saarxiv_check(team_nb, round, results):

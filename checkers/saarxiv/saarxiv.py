@@ -199,7 +199,7 @@ class SaarXivInterface(ServiceInterface):
             return 1
         except IOError:
             raise OfflineException('Could not login')
-
+            return 0
 
 if __name__ == '__main__':
     # TEST CODE
