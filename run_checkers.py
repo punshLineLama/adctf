@@ -14,7 +14,7 @@ scheduler = sched.scheduler(time.time, time.sleep)
 
 # Define the interval in seconds (10 seconds)
 interval = 3
-results = [None] * 10
+results = [False] * 10
 
 global round_g
 round_g = 0
@@ -57,7 +57,7 @@ def saarxiv_check(team_nb, round, results):
 
     print('[2] Store flags...')
     flags_store = service.store_flags(team, round)
-    print('Done ({} flags).'.format(flags))
+    print('Done ({} flags).'.format(flags_store))
 
     print('[3] Retrieve the flags in the next round')
     flags = service.retrieve_flags(team, round)
@@ -80,7 +80,7 @@ def saarlender_check(team_nb, round, results):
 
     print('[2] Store flags...')
     flags_store = service.store_flags(team, round)
-    print('Done ({} flags).'.format(flags))
+    print('Done ({} flags).'.format(flags_store))
 
     print('[3] Retrieve the flags in the next round')
     flags = service.retrieve_flags(team, round)

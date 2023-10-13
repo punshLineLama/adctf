@@ -62,16 +62,22 @@ def main():
 
             client_socket.send(b"Checking your services of %s....\n"%target.encode("utf-8"))
             try:
-                run_checkers.run_saarxiv_check(teamid,1)
-                client_socket.send(b"SaarXiv: UP\n")
+                res = run_checkers.run_saarxiv_check(teamid,1)
+                if res:
+                    client_socket.send(b"SaarXiv: UP\n")
+                else:
+                    client_socket.send(b"SaarXiv: DOWN\n")            
             except Exception as e:
                 # Catch the exception and print it
                 print(f"An exception occurred: {e}")
                 client_socket.send(b"SaarXiv: DOWN\n"+str(e))
             
             try:
-                run_checkers.run_saarlender_check(teamid,1)
-                client_socket.send(b"Saarlenar: UP\n")
+                res = run_checkers.run_saarlender_check(teamid,1)
+                if res:
+                    client_socket.send(b"SaarXiv: UP\n")
+                else:
+                    client_socket.send(b"SaarXiv: DOWN\n")  
             except Exception as e: 
                 client_socket.send(b"Saarlendar: DOWN%s\n"+str(e))
 
