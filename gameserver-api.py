@@ -99,15 +99,23 @@ def main():
                 client_socket.send(b"Got flags: %s"+flags.encode('utf-8'))
 
             elif "2" in service:
-                flags = saarlendar_exploit.exploit("192.168.42.31")
-                client_socket.send(b"Got flags: %s"+''.join(flags).encode('utf-8'))
-                exploitdirectfileaccess.exploit("192.168.42.31")
-                client_socket.send("Exploits run successfully! ;)")
+                try:
+                    flags = saarlendar_exploit.exploit("192.168.42.31")
+                    client_socket.send(b"Got flags: %s"+''.join(flags).encode('utf-8'))
+                    exploitdirectfileaccess.exploit("192.168.42.31")
+                    client_socket.send("Exploits run successfully! ;)")
+                except:
+                    client_socket.send("Exploits run failed! :( )")
+
             
             elif "3 in service":
-                exploitleakkey.attack_leak_key("192.168.42.31:8000")
-                exploitrcpoints.attack_rc_points("192.168.42.31:8000")
-                exploitrcshare.attack_rc_share("192.168.42.31:8000")
+                try:
+                    exploitleakkey.attack_leak_key("192.168.42.31:8080")
+                    exploitrcpoints.attack_rc_points("192.168.42.31:8080")
+                    exploitrcshare.attack_rc_share("192.168.42.31:8080")
+                except:
+                    client_socket.send("Exploits run failed! :( )")
+
 
 
 
